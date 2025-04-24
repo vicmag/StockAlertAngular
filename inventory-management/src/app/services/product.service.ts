@@ -8,6 +8,8 @@ export class ProductService {
   constructor(private repository: ProductRepository) {}
 
   increaseStock(productName: string, increment: number): void {
-    throw new Error('Método no implementado');
+    const product = this.repository.findByName(productName);
+    product!.stock += increment;
+    this.repository.save(product!);
   }
 }
