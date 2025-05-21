@@ -1,0 +1,34 @@
+{
+  "name": "Angular Dev Container",
+  "dockerFile": "Dockerfile",
+  "context": "..",
+  "forwardPorts": [4200],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true,
+          "source.organizeImports": true
+        },
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "git.enableSmartCommit": true
+      },
+      "extensions": [
+        "angular.ng-template",
+        "vscode.git",
+        "eamodio.gitlens",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "johnpapa.angular-essentials",
+        "github.copilot"
+      ]
+    }
+  },
+  "postCreateCommand": "git lfs install",
+  "remoteUser": "node",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  }
+}
