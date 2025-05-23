@@ -1,19 +1,16 @@
-// src/app/services/product.service.spec.ts
-import { TestBed } from '@angular/core/testing';
-import { ProductRepository } from '../repositories/product.repository';
-import { ProductService } from './product.service';
+
+
+//Definición del mock del repositorio
+jest.mock('../repositories/product.repository', () => ({
+  findByName: jest.fn(),
+  save: jest.fn()
+}));
 
 describe('ProductService', () => {
+  const repositoryMock = require('../repositories/product.repository');
   let service: ProductService;
-  let repositoryMock: jest.Mocked<ProductRepository>; // Cambiado a jest.Mocked
 
   beforeEach(() => {
-    // Configuración del mock con Jest
-    repositoryMock = {
-      findByName: jest.fn(),
-      save: jest.fn(),
-      updateMinimumStock: jest.fn(),
-    } as unknown as jest.Mocked<ProductRepository>;
 
     TestBed.configureTestingModule({
       providers: [
@@ -26,15 +23,32 @@ describe('ProductService', () => {
   });
 
   it('debe incrementar stock correctamente', () => {
-    const testProduct = { name: 'Camiseta', stock: 10, minimumStock: 5 };
-    repositoryMock.findByName.mockReturnValue(testProduct);
+    //Action (configuración)
+    const productName = 'Camiseta';
+    const initialStock = 10;
+    const increment = 5;
+    const product : Product = { 
+      name: productName, 
+      stock: initialStock
+    };
 
-    service.increaseStock('Camiseta', 3);
+    //Comportamiento del mock
+    repositoryMock.findByName.mockReturnValue(product);
+    repositoryMock.save.mockImplementation((product: Product) => product);
 
+    //Act (Ejecución)
+    service.increaseStock(productName,  increment);
+
+    //Assert (Validación)
+    expect(repositoryMock.findByName).toHaveBeenCalledWith(productName);
     expect(repositoryMock.save).toHaveBeenCalledWith({
-      name: 'Camiseta',
-      stock: 13,
-      minimumStock: 5,
+      name: productName,
+      stock: initialStock + increment
+    });
+
+
+
+ 
     });
   });
 });
