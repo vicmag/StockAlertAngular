@@ -1,21 +1,28 @@
-
-
-//Definición del mock del repositorio
-jest.mock('../repositories/product.repository', () => ({
-  findByName: jest.fn(),
-  save: jest.fn()
-}));
+import { TestBed } from '@angular/core/testing';
+import { Product } from '../models/product.model'; // Adjust the path if needed
+import {
+  PRODUCT_REPOSITORY,
+  ProductRepository,
+} from '../repositories/product.repository';
+import { ProductService } from './product.service';
 
 describe('ProductService', () => {
-  const repositoryMock = require('../repositories/product.repository');
+  let mockRepository: jest.Mocked<ProductRepository>;
   let service: ProductService;
 
   beforeEach(() => {
+    mockRepository = {
+      findByName: jest.fn(),
+      save: jest.fn(),
+    };
 
     TestBed.configureTestingModule({
       providers: [
         ProductService,
-        { provide: ProductRepository, useValue: repositoryMock },
+        {
+          provide: PRODUCT_REPOSITORY,
+          useValue: mockRepository,
+        },
       ],
     });
 
@@ -27,28 +34,23 @@ describe('ProductService', () => {
     const productName = 'Camiseta';
     const initialStock = 10;
     const increment = 5;
-    const product : Product = { 
-      name: productName, 
-      stock: initialStock
+    const product: Product = {
+      name: productName,
+      stock: initialStock,
     };
 
     //Comportamiento del mock
-    repositoryMock.findByName.mockReturnValue(product);
-    repositoryMock.save.mockImplementation((product: Product) => product);
+    mockRepository.findByName.mockReturnValue(product);
+    mockRepository.save.mockImplementation((product: Product) => product);
 
     //Act (Ejecución)
-    service.increaseStock(productName,  increment);
+    service.increaseStock(productName, increment);
 
     //Assert (Validación)
-    expect(repositoryMock.findByName).toHaveBeenCalledWith(productName);
-    expect(repositoryMock.save).toHaveBeenCalledWith({
+    expect(mockRepository.findByName).toHaveBeenCalledWith(productName);
+    expect(mockRepository.save).toHaveBeenCalledWith({
       name: productName,
-      stock: initialStock + increment
-    });
-
-
-
- 
+      stock: initialStock + increment,
     });
   });
 });
