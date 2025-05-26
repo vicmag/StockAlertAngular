@@ -7,11 +7,5 @@ import { PRODUCT_REPOSITORY } from '../repositories/product.repository';
 export class ProductService {
   private readonly repository = inject(PRODUCT_REPOSITORY);
 
-  increaseStock(productName: string, increment: number) {
-    const product = this.repository.findByName(productName);
-    if (product) {
-      product.stock += increment;
-      this.repository.save(product);
-    }
-  }
+  increaseStock(productName: string, increment: number) {}
 }
