@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { ProductNotFoundError } from '../errors/product-not-found.error';
 import { Product } from '../models/product.model'; // Adjust the path if needed
 import {
   PRODUCT_REPOSITORY,
@@ -63,7 +64,7 @@ describe('ProductService', () => {
 
     //Act & Assert
     expect(() => service.increaseStock(productName, increment)).toThrowError(
-      'Artículo no encontrado'
+      ProductNotFoundError
     );
 
     expect(mockRepository.save).not.toHaveBeenCalled();

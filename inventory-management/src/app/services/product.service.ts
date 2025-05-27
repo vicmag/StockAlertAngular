@@ -1,14 +1,10 @@
 import { Injectable, inject } from '@angular/core';
+import { ProductNotFoundError } from '../errors/product-not-found.error';
 import { PRODUCT_REPOSITORY } from '../repositories/product.repository';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductNotFoundError extends Error {
-  constructor(productName: string) {
-    super(`Producto no encontrado: ${productName}`);
-  }
-}
 export class ProductService {
   private readonly repository = inject(PRODUCT_REPOSITORY);
 
@@ -16,7 +12,7 @@ export class ProductService {
     const product = this.repository.findByName(productName);
 
     if (!product) {
-      throw new Error('Artículo no encontrado');
+      throw new ProductNotFoundError(productName);
     }
 
     product.stock += increment;
