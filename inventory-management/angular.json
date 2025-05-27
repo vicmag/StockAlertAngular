@@ -3,23 +3,35 @@
   "version": 1,
   "projects": {
     "inventory-management": {
+      "root": "",
       "projectType": "application",
+      "sourceRoot": "src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "outputPath": "dist/inventory-management",
+            "index": "src/index.html",
+            "main": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "polyfills": ["zone.js"]
+            "polyfills": ["zone.js"],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "scripts": []
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:jest",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "polyfills": ["zone.js", "zone.js/testing"]
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "codeCoverage": true,
+            "coverageDirectory": "coverage/inventory-management"
           }
         }
       }
     }
-  }
+  },
+  "defaultProject": "inventory-management"
 }

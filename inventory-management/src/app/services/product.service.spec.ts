@@ -53,4 +53,19 @@ describe('ProductService', () => {
       stock: initialStock + increment,
     });
   });
+
+  it('debe lanzar error cuando el producto no existe', () => {
+    //Action
+    const productName = 'ProductoInexistente';
+    const increment = 5;
+
+    mockRepository.findByName.mockReturnValue(undefined);
+
+    //Act & Assert
+    expect(() => service.increaseStock(productName, increment)).toThrowError(
+      'Artículo no encontrado'
+    );
+
+    expect(mockRepository.save).not.toHaveBeenCalled();
+  });
 });
