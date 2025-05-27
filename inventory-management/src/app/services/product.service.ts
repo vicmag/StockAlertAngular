@@ -15,6 +15,10 @@ export class ProductService {
   increaseStock(productName: string, increment: number) {
     const product = this.repository.findByName(productName);
 
+    if (!product) {
+      throw new Error('Artículo no encontrado');
+    }
+
     product.stock += increment;
     this.repository.save(product);
   }
